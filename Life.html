@@ -22,37 +22,37 @@ ctx.fillStyle = "#000000";
 
 
 function getRandom(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 for (i=0; i<1024; i++) {
-  var x = getRandom(0,64);
-  var y = getRandom(0,64);
-  ctx.fillRect(x,y,1,1);
+	var x = getRandom(0,64);
+	var y = getRandom(0,64);
+	ctx.fillRect(x,y,1,1);
 }
 
 
 function processDots() {
-  var cwidth = c.width;
-  var cheight = c.height;
-  for (y=0; y <= cheight; y++) {
-    for (x=0; x <= cwidth; x++){
-      var status = checkState(x,y);
-    }
-    if(y === 64) {
-    	console.log("done");
-    }
-  }
-  
+	var cwidth = c.width;
+	var cheight = c.height;
+	for (y=0; y <= cheight; y++) {
+		for (x=0; x <= cwidth; x++){
+			var status = checkState(x,y);
+		}
+		if(y === 64) {
+			console.log("done");
+		}
+	}
+	
 }
 
 
 function checkState(x,y) {
-   var imageData = ctx.getImageData(x,y,1,1);
-   var color = imageData.data[3];
-   var status = false;
-   if (color !== 0) { status = true; neighbors(x,y,status);} 
-    
+	 var imageData = ctx.getImageData(x,y,1,1);
+	 var color = imageData.data[3];
+	 var status = false;
+	 if (color !== 0) { status = true; neighbors(x,y,status);} 
+		
 }
 
 
@@ -60,54 +60,50 @@ function checkState(x,y) {
 
 
 function neighbors(x,y,status) {
-  
-  for(i=0; i < 3; i++){
-  		var neighborsAlive = 0;
-    for(si=0; si < 3; si++){
-		var yOffset = i - 1;
-		var xOffset = si - 1;
+	
+	for(i=0; i < 3; i++){
+		for(si=0; si < 3; si++){			
+			var neighborsAlive = 0;
+			var yOffset = i - 1;
+			var xOffset = si - 1;
 
-		var xCheck = x + xOffset;
-		var yCheck = y + yOffset;
+			var xCheck = x + xOffset;
+			var yCheck = y + yOffset;
 
-		var neighborAlive = checkState(xCheck, yCheck);
-		if (neighborAlive == true) { neighborsAlive++;}
-    } //End x For Loop
-    
-    	
-    if (i === 2) { 
-    	god(neighborsAlive,x,y,status);
-    }
-    
-  } //End y For loop
+			var neighborAlive = checkState(xCheck, yCheck);
+			if (neighborAlive == true) { neighborsAlive++;}
+			
+			if (si === 2) { god(neighborsAlive,x,y,status);}
+		} //End x For Loop
+	} //End y For loop
 }
 
 
 
 
 function god(n,x,y,status){
-  //Rule 1:  if n < 2 {die}
-  if (n < 2 && status === true) {die(x,y);}
-  
-  //Rule 2:  if n >= 2 && n <= 3 {ignore}
-  
-  //Rule 3:  if n > 3 {die}
-  if (n > 3) {die(x,y);}
-  
-  //Rule 4:  if n = 3 && status == false {live}
-  if (n === 3 && status === false){ live(x,y);}
+	//Rule 1:  if n < 2 {die}
+	if (n < 2 && status === true) {die(x,y);}
+	
+	//Rule 2:  if n >= 2 && n <= 3 {ignore}
+	
+	//Rule 3:  if n > 3 {die}
+	if (n > 3) {die(x,y);}
+	
+	//Rule 4:  if n = 3 && status == false {live}
+	if (n === 3 && status === false){ live(x,y);}
 }
 
 
 
 function die(x,y) {
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(x,y,1,1);
+	ctx.fillStyle = "#fff";
+	ctx.fillRect(x,y,1,1);
 }
 
 function live(x,y) {
-  ctx.fillStyle = "#000";
-  ctx.fillRect(x,y,1,1);
+	ctx.fillStyle = "#000";
+	ctx.fillRect(x,y,1,1);
 }
 
 
